@@ -3,7 +3,6 @@ package com.example.yellow.service;
 import com.example.yellow.entity.JoggingEntity;
 import com.example.yellow.entity.UserEntity;
 import com.example.yellow.model.JoggingModel;
-import com.example.yellow.model.UserModel;
 import com.example.yellow.model.WeekStatistics;
 import com.example.yellow.repository.JoggingRepository;
 import com.example.yellow.repository.UserRepository;
