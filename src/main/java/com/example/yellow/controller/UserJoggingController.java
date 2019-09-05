@@ -16,35 +16,35 @@ public class UserJoggingController {
     private UserJoggingService userJoggingService;
 
     @PostMapping
-    public void createUserJogging(Authentication authentication, @RequestBody JoggingModel jogging){
+    public void createUserJogging(Authentication authentication, @RequestBody JoggingModel jogging) {
 
         userJoggingService.createJogging(authentication.getName(), jogging);
     }
 
     @GetMapping
-    public Iterable<JoggingModel> getUserJoggings(Authentication authentication){
+    public Iterable<JoggingModel> getUserJoggings(Authentication authentication) {
 
         return userJoggingService.getUserJoggings(authentication.getName());
     }
 
     @GetMapping("/statistics")
-    public Iterable<WeekStatistics> getUserWeekStatistics(Authentication authentication){
+    public Iterable<WeekStatistics> getUserWeekStatistics(Authentication authentication) {
 
         return userJoggingService.getWeekStatistics(authentication.getName());
     }
 
     @PutMapping("/jogging")
-    public void updateUserJogging(Authentication authentication, @RequestBody JoggingModel jogging){
+    public void updateUserJogging(Authentication authentication, @RequestBody JoggingModel jogging) {
 
         userJoggingService.updateUserJogging(authentication.getName(), jogging);
     }
 
     @DeleteMapping("/jogging")
-    public void deleteUserJogging(Authentication authentication, @RequestBody JoggingModel jogging){
+    public void deleteUserJogging(Authentication authentication, @RequestBody JoggingModel jogging) {
         userJoggingService.deleteJogging(authentication.getName(), jogging.getId());
     }
 
-    @GetMapping("/j")
+    /*@GetMapping("/j")
     public Iterable<JoggingModel> getEnt(Authentication authentication){
         return userJoggingService.getAll();
     }
@@ -52,6 +52,5 @@ public class UserJoggingController {
     @GetMapping("/u")
     public Iterable<UserModel> getU(Authentication authentication){
         return userJoggingService.getU();
-    }
-
+    }*/
 }

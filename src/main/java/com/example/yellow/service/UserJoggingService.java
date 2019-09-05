@@ -47,10 +47,11 @@ public class UserJoggingService {
 
         if (!user.getJoggings().containsKey(joggingId)) throw new EntityExistsException("User has no jogging with id: " + joggingId);
 
-        user.getJoggings().remove(joggingId);
-        log.debug("User joggings: " + user.getJoggings().size());
-        userRepository.save(user);
-        //joggingRepository.deleteById(joggingId);
+        user.getJoggings().remove(jogging.getId(), jogging);
+        log.info("User joggings: " + user.getJoggings().size() + " id: " + joggingId + " jogId: " + jogging.getId());
+
+        joggingRepository.deleteById(joggingId);
+
     }
 
     public Iterable<JoggingModel> getUserJoggings(String username) throws UsernameNotFoundException {
@@ -58,7 +59,6 @@ public class UserJoggingService {
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        //System.out.println(user.getJoggings().size());
         log.debug("Number of user's joggings: " + user.getJoggings().size());
 
         return createJoggingModelList(user.getJoggings().values());
@@ -157,15 +157,15 @@ public class UserJoggingService {
                 .collect(Collectors.toList());
     }
 
-    public Iterable<JoggingModel> getAll(){
+    /*public Iterable<JoggingModel> getAllJoggins(){
         ArrayList<JoggingEntity> list = new ArrayList<>();
         joggingRepository.findAll().forEach(list::add);
         return createJoggingModelList(list);
-    }
+    }*/
 
-    public Iterable<UserModel> getU(){
+    /*public Iterable<UserModel> getAllUsers(){
         ArrayList<UserEntity> list = new ArrayList<>();
         userRepository.findAll().forEach(list::add);
         return list.stream().map(v->UserModel.builder().username(v.getUsername()).password(v.getPassword()).build()).collect(Collectors.toList());
-    }
+    }*/
 }
