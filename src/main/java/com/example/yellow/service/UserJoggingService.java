@@ -3,6 +3,7 @@ package com.example.yellow.service;
 import com.example.yellow.entity.JoggingEntity;
 import com.example.yellow.entity.UserEntity;
 import com.example.yellow.model.JoggingModel;
+import com.example.yellow.model.UserModel;
 import com.example.yellow.model.WeekStatistics;
 import com.example.yellow.repository.JoggingRepository;
 import com.example.yellow.repository.UserRepository;
@@ -30,9 +31,9 @@ public class UserJoggingService {
 
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-        user.getJoggings().add(
-                joggingRepository.save(convertToJoggingEntity(jogging, user))
-        );
+        JoggingEntity joggingEntity = joggingRepository.save(convertToJoggingEntity(jogging, user));
+        user.getJoggings().put(joggingEntity.getId(), joggingEntity);
+
         userRepository.save(user);
 
     }
@@ -41,20 +42,15 @@ public class UserJoggingService {
 
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException(username));
-        Optional<JoggingEntity> jogging = joggingRepository.findById(joggingId);
-        boolean hasJogging = false;
-        for (JoggingEntity j: user.getJoggings()){
-            if (j.getId().equals(joggingId)){
-                hasJogging = true;
-                break;
-            }
-        }
-        if (!hasJogging) throw new EntityExistsException("User has no jogging with id: " + joggingId);
-        if (jogging.isPresent()){
-            user.getJoggings().remove(jogging.get());
-            userRepository.save(user);
-            //joggingRepository.deleteById(joggingId);
-        }
+        JoggingEntity jogging = joggingRepository.findById(joggingId)
+                .orElseThrow(()-> new EntityExistsException("No jogging with id: " + joggingId));
+
+        if (!user.getJoggings().containsKey(joggingId)) throw new EntityExistsException("User has no jogging with id: " + joggingId);
+
+        user.getJoggings().remove(joggingId);
+        log.debug("User joggings: " + user.getJoggings().size());
+        userRepository.save(user);
+        //joggingRepository.deleteById(joggingId);
     }
 
     public Iterable<JoggingModel> getUserJoggings(String username) throws UsernameNotFoundException {
@@ -65,7 +61,7 @@ public class UserJoggingService {
         //System.out.println(user.getJoggings().size());
         log.debug("Number of user's joggings: " + user.getJoggings().size());
 
-        return createJoggingModelList(user.getJoggings());
+        return createJoggingModelList(user.getJoggings().values());
 
     }
 
@@ -73,14 +69,8 @@ public class UserJoggingService {
 
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException(username));
-        boolean hasJogging = false;
-        for (JoggingEntity j: user.getJoggings()){
-            if (j.getId().equals(jogging.getId())){
-                hasJogging = true;
-                break;
-            }
-        }
-        if (!hasJogging) throw new NoSuchElementException("User has no jogging with id: " + jogging.getId());
+
+        if (!user.getJoggings().containsKey(jogging.getId())) throw new NoSuchElementException("User has no jogging with id: " + jogging.getId());
 
         JoggingEntity joggingEntity = joggingRepository.findById(jogging.getId())
                 .orElseThrow(EntityExistsException::new);
@@ -97,7 +87,7 @@ public class UserJoggingService {
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        List<JoggingEntity> joggings = user.getJoggings();
+        Collection<JoggingEntity> joggings = user.getJoggings().values();
 
         Map<Integer, List<JoggingEntity>> weeks = new HashMap<>();
         List<WeekStatistics> weekStatistics = new ArrayList<>();
@@ -171,5 +161,11 @@ public class UserJoggingService {
         ArrayList<JoggingEntity> list = new ArrayList<>();
         joggingRepository.findAll().forEach(list::add);
         return createJoggingModelList(list);
+    }
+
+    public Iterable<UserModel> getU(){
+        ArrayList<UserEntity> list = new ArrayList<>();
+        userRepository.findAll().forEach(list::add);
+        return list.stream().map(v->UserModel.builder().username(v.getUsername()).password(v.getPassword()).build()).collect(Collectors.toList());
     }
 }

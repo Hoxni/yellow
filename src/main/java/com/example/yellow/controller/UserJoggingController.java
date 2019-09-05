@@ -1,6 +1,7 @@
 package com.example.yellow.controller;
 
 import com.example.yellow.model.JoggingModel;
+import com.example.yellow.model.UserModel;
 import com.example.yellow.model.WeekStatistics;
 import com.example.yellow.service.UserJoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,11 @@ public class UserJoggingController {
     @GetMapping("/j")
     public Iterable<JoggingModel> getEnt(Authentication authentication){
         return userJoggingService.getAll();
+    }
+
+    @GetMapping("/u")
+    public Iterable<UserModel> getU(Authentication authentication){
+        return userJoggingService.getU();
     }
 
 }
