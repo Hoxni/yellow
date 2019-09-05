@@ -1,5 +1,7 @@
 package com.example.yellow.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,16 +10,18 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-//@Entity
-//@Table(name = "\"joggings\"")
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "joggings")
 public class JoggingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     private int distance;
