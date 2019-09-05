@@ -19,7 +19,7 @@ public class UserEntity {
     private String username;
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
     private List<JoggingEntity> joggings;
 
     public UserEntity(String username, String password) {

@@ -6,6 +6,7 @@ import com.example.yellow.model.JoggingModel;
 import com.example.yellow.model.WeekStatistics;
 import com.example.yellow.repository.JoggingRepository;
 import com.example.yellow.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserJoggingService {
 
     @Autowired
@@ -59,6 +61,9 @@ public class UserJoggingService {
 
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        //System.out.println(user.getJoggings().size());
+        log.debug("Number of user's joggings: " + user.getJoggings().size());
 
         return createJoggingModelList(user.getJoggings());
 
