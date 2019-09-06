@@ -3,11 +3,14 @@ package com.example.yellow.service;
 import com.example.yellow.entity.JoggingEntity;
 import com.example.yellow.entity.UserEntity;
 import com.example.yellow.model.JoggingModel;
+import com.example.yellow.model.UserModel;
 import com.example.yellow.model.WeekStatistics;
 import com.example.yellow.repository.JoggingRepository;
 import com.example.yellow.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
@@ -24,24 +29,26 @@ public class UserJoggingService {
     private UserRepository userRepository;
     @Autowired
     private JoggingRepository joggingRepository;
-    @Autowired
-    private JoggingUtils joggingUtils;
 
-    public void createJogging(String username, JoggingModel jogging) {
+    public void createJogging(Long userId, JoggingModel jogging) {
 
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
         JoggingEntity joggingEntity = joggingRepository.save(
-                joggingUtils.convertModelToEntity(jogging, user));
-        user.getJoggings().put(joggingEntity.getId(), joggingEntity);
+                JoggingUtils.convertModelToEntity(jogging, userId));
+        //user.getJoggings().put(joggingEntity.getId(), joggingEntity);
 
-        userRepository.save(user);
+        //userRepository.save(user);
 
     }
 
-    public void deleteJogging(String username, Long joggingId) {
+    public JoggingModel getJogging(Long id){
+        JoggingEntity joggingEntity = joggingRepository.findById(id)
+                .orElseThrow(()-> new EntityExistsException("No jogging with id: " + id));
+        return JoggingUtils.convertEntityToModel(joggingEntity);
+    }
 
-        UserEntity user = userRepository.findByUsername(username)
+    public void deleteJogging(Long joggingId) {
+
+        /*UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException(username));
         JoggingEntity jogging = joggingRepository.findById(joggingId)
                 .orElseThrow(()-> new EntityExistsException("No jogging with id: " + joggingId));
@@ -51,44 +58,51 @@ public class UserJoggingService {
 
         log.debug("Number of user's joggings: " + user.getJoggings().size());
         user.getJoggings().remove(jogging.getId(), jogging);
-        log.debug("Number of user's joggings after deleting one: " + user.getJoggings().size());
+        log.debug("Number of user's joggings after deleting one: " + user.getJoggings().size());*/
 
         joggingRepository.deleteById(joggingId);
 
     }
 
-    public Iterable<JoggingModel> getUserJoggings(String username) throws UsernameNotFoundException {
+    public Iterable<JoggingModel> getUserJoggings(Long userId, int page, int size) throws UsernameNotFoundException {
 
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+        Pageable pageable = PageRequest.of(page, size);
 
-        log.debug("Number of user's joggings: " + user.getJoggings().size());
+        List<JoggingEntity> joggingEntities;
 
-        return joggingUtils.createListOfModels(user.getJoggings().values());
+        if (userId == null){
+            joggingEntities = joggingRepository.findAll(pageable).getContent();
+        } else {
+            joggingEntities = joggingRepository.findAllByUserId(userId, pageable);
+        }
 
+        return joggingEntities.stream()
+                .map(JoggingUtils::convertEntityToModel)
+                .collect(Collectors.toList());
     }
 
-    public void updateUserJogging(String username, JoggingModel jogging) {
-
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException(username));
-
-        if (!user.getJoggings().containsKey(jogging.getId()))
-            throw new NoSuchElementException("User has no jogging with id: " + jogging.getId());
+    public void updateJogging(JoggingModel jogging) {
 
         JoggingEntity joggingEntity = joggingRepository.findById(jogging.getId())
                 .orElseThrow(EntityExistsException::new);
 
         joggingRepository.save(
-                joggingUtils.updateEntity(joggingEntity, jogging));
+                JoggingUtils.updateEntity(joggingEntity, jogging));
     }
 
-    public Iterable<WeekStatistics> getWeekStatistics(String username) {
+    public UserModel getUser(Long id){
+
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(EntityExistsException::new);
+        return UserUtils.convertEntityToModel(userEntity);
+    }
+
+    /*public Iterable<WeekStatistics> getWeekStatistics(String username) {
 
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        Collection<JoggingEntity> joggings = user.getJoggings().values();
+        Collection<JoggingEntity> joggings = user.getJoggings();
 
         Map<Integer, List<JoggingEntity>> weeks = new HashMap<>();
         List<WeekStatistics> weekStatistics = new ArrayList<>();
@@ -130,14 +144,13 @@ public class UserJoggingService {
                 .getDateTime().toLocalDate();
 
         return new WeekStatistics(startDate, endDate, averageSpeed, averageTime, totalDistance);
-    }
+    }*/
 
 
 
     /*public Iterable<JoggingModel> getAllJoggins(){
-        ArrayList<JoggingEntity> list = new ArrayList<>();
-        joggingRepository.findAll().forEach(list::add);
-        return createJoggingModelList(list);
+        Pageable pageable = PageRequest.of(page, size);
+        return joggingRepository.findAll();
     }*/
 
     /*public Iterable<UserModel> getAllUsers(){

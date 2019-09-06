@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -24,8 +25,7 @@ public class UserEntity {
     @NonNull
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-    @MapKey(name = "id")
-    private Map<Long, JoggingEntity> joggings;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", orphanRemoval = true)
+    private List<JoggingEntity> joggings;
 
 }

@@ -17,14 +17,14 @@ public class JoggingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY, targetEntity = Long.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity user;
+    private Long userId;
 
-    private int distance;
+    private Long distance;
 
     @Column(name = "\"time\"")
-    private int time;
+    private Long time;
 
     private LocalDateTime dateTime;
 
