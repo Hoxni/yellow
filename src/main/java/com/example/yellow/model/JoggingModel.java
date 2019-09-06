@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class JoggingModel {
 
     private Long id;
-    private int distance;
-    private int time;
+    private Long distance;
+    private Long time;
     private LocalDateTime dateTime;
 
 }

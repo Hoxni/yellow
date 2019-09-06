@@ -29,7 +29,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserModel user) throws Exception{
 
         String token = authService.login(user.getUsername(), user.getPassword());

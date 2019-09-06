@@ -8,47 +8,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1")
 public class UserJoggingController {
 
     @Autowired
     private UserJoggingService userJoggingService;
 
-    @PostMapping
-    public void createUserJogging(Authentication authentication, @RequestBody JoggingModel jogging) {
+    @PostMapping("/joggings")
+    public void createJogging(@RequestParam Long userId, @RequestBody JoggingModel jogging) {
 
-        userJoggingService.createJogging(authentication.getName(), jogging);
+        userJoggingService.createJogging(userId, jogging);
     }
 
-    @GetMapping
-    public Iterable<JoggingModel> getUserJoggings(Authentication authentication) {
-
-        return userJoggingService.getUserJoggings(authentication.getName());
+    @GetMapping("/joggings")
+    public Iterable<JoggingModel> getUserJoggings(
+            @RequestParam(required = false) Long userId,
+            @RequestParam int page,
+            @RequestParam(defaultValue = "10") @Max(100) int size) {
+        return userJoggingService.getUserJoggings(userId, page, size);
     }
 
-    @GetMapping("/statistics")
+    @GetMapping("/joggings/{joggingId}")
+    public JoggingModel getJogging(@PathVariable Long joggingId){
+        return userJoggingService.getJogging(joggingId);
+    }
+
+    /*@GetMapping("/statistics")
     public Iterable<WeekStatistics> getUserWeekStatistics(Authentication authentication) {
 
         return userJoggingService.getWeekStatistics(authentication.getName());
+    }*/
+
+    @PutMapping("/joggings")
+    public void updateJogging(@RequestBody JoggingModel jogging) {
+
+        userJoggingService.updateJogging(jogging);
     }
 
-    @PutMapping("/jogging")
-    public void updateUserJogging(Authentication authentication, @RequestBody JoggingModel jogging) {
-
-        userJoggingService.updateUserJogging(authentication.getName(), jogging);
+    @DeleteMapping("/joggings/{joggingId}")
+    public void deleteJogging(@PathVariable Long joggingId) {
+        userJoggingService.deleteJogging(joggingId);
     }
 
-    @DeleteMapping("/jogging")
-    public void deleteUserJogging(Authentication authentication, @RequestBody JoggingModel jogging) {
-        userJoggingService.deleteJogging(authentication.getName(), jogging.getId());
+    @GetMapping("/users/{userId}")
+    public void getUser(@PathVariable Long userId){
+        userJoggingService.getUser(userId);
     }
 
-    /*@GetMapping("/j")
+    /*@GetMapping("/joggings")
     public Iterable<JoggingModel> getEnt(Authentication authentication){
         return userJoggingService.getAll();
-    }
+    }*/
 
+    /*
     @GetMapping("/u")
     public Iterable<UserModel> getU(Authentication authentication){
         return userJoggingService.getU();

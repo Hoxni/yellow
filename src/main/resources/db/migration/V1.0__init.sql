@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS `joggings`
 (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `user_id` BIGINT NOT NULL,
-    `distance` INT,
-    "time" INT,
+    `distance` BIGINT,
+    "time" BIGINT,
     `date_time` TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
