@@ -36,7 +36,6 @@ public class JoggingUtils {
                 .distance(entity.getDistance())
                 .time(entity.getTime())
                 .dateTime(entity.getDateTime())
-                .userId(entity.getUser().getId())
                 .build();
     }
 
