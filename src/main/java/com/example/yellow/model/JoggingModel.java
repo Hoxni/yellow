@@ -5,13 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserModel {
+public class JoggingModel {
 
-    private String username;
-    private String password;
+    private Long id;
+    private int distance;
+    private int time;
+    private LocalDateTime dateTime;
+    private Long userId;
 
 }

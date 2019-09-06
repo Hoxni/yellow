@@ -1,23 +1,24 @@
 package com.example.yellow.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-//@Entity
-//@Table(name = "\"joggings\"")
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "joggings")
 public class JoggingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserEntity user;
 
     private int distance;
