@@ -17,6 +17,5 @@ public class JoggingModel {
     private int distance;
     private int time;
     private LocalDateTime dateTime;
-    private Long userId;
 
 }
