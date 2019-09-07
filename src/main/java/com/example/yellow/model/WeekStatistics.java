@@ -15,4 +15,5 @@ public class WeekStatistics {
     private double averageSpeed;
     private double averageTime;
     private int totalDistance;
+
 }
