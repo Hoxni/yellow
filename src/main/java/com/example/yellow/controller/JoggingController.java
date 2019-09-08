@@ -52,5 +52,4 @@ public class JoggingController {
             @RequestParam(defaultValue = "10") @Max(100) int size){
         return joggingService.getWeekStatistics(userId, page, size);
     }
-
 }

@@ -32,5 +32,9 @@ public interface JoggingRepository extends PagingAndSortingRepository<JoggingEnt
             "select jog.date_time as startDate, jog.date_time as endDate, jog.distance as totalDistance, jog.distance as averageTime, jog.distance as averageSpeed " +
             "from JOGGINGS jog " +
             "where jog.user_id = ?1 ", nativeQuery = true)*/
-    Page<WeekStatistics> getWeekStatisticsByUserId(Long id, Pageable pageable);
+
+    @Query("SELECT new com.example.yellow.model.WeekStatistics(je.dateTime, je.dateTime, je.distance, je.distance, je.distance) FROM JoggingEntity je WHERE je.userId=?1")
+    Page<WeekStatistics> getStatistics(Long userId, Pageable pageable);
+
+
 }

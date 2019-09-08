@@ -4,16 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 public class WeekStatistics {
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
-    private double averageSpeed;
-    private double averageTime;
-    private int totalDistance;
+    private Long averageSpeed;
+    private Long averageTime;
+    private Long totalDistance;
 
 }

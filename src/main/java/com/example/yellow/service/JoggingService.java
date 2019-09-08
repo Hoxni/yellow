@@ -55,6 +55,6 @@ public class JoggingService {
 
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        return joggingRepository.getWeekStatisticsByUserId(userId, pageable);
+        return joggingRepository.getStatistics(userId, pageable);
     }
 }
