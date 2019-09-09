@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class JoggingNotFoundException extends RuntimeException {
     public JoggingNotFoundException(Long id) {
-        super("No jogging with id: " + id);
+        super("Not found jogging with id: " + id);
     }
 }

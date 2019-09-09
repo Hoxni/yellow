@@ -4,11 +4,11 @@ import com.example.yellow.model.JoggingModel;
 import com.example.yellow.model.WeekStatistics;
 import com.example.yellow.service.JoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -23,11 +23,11 @@ public class JoggingController {
     }
 
     @GetMapping("/joggings")
-    public Page<JoggingModel> getUserJoggings(
+    public List<JoggingModel> getUserJoggings(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
             @RequestParam(defaultValue = "10") @Max(100) int size) {
-        return joggingService.getUserJoggings(userId, page, size);
+        return joggingService.getUserJoggings(userId, page, size).getContent();
     }
 
     @GetMapping("/joggings/{joggingId}")
@@ -46,11 +46,11 @@ public class JoggingController {
     }
 
     @GetMapping("/statistics")
-    public Page<WeekStatistics> getWeekStatistics(
+    public List<WeekStatistics> getWeekStatistics(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
             @RequestParam(defaultValue = "10") @Max(100) int size){
-        return joggingService.getWeekStatistics(userId, page, size);
+        return joggingService.getWeekStatistics(userId, page, size).getContent();
     }
 
 }
