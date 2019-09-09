@@ -1,10 +1,9 @@
 package com.example.yellow.service;
 
 import com.example.yellow.entity.JoggingEntity;
-import com.example.yellow.entity.UserEntity;
 import com.example.yellow.model.JoggingModel;
 
-public class JoggingUtils {
+public class JoggingConverter {
 
     public static JoggingEntity updateEntity(JoggingEntity updatable, JoggingModel newData){
 

@@ -17,7 +17,6 @@ public class JoggingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@ManyToOne(fetch = FetchType.LAZY, targetEntity = Long.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Long userId;
 
