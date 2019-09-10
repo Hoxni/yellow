@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: test_postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=pass
+    restart: always
+  # APP*****************************************
+  app:
+    restart: always
+    build: .
+    depends_on:
+      - postgres
+    links:
+      - postgres
+
+volumes:
+  db-data:

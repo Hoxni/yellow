@@ -17,6 +17,6 @@ public interface JoggingRepository extends PagingAndSortingRepository<JoggingEnt
             "MIN(je.dateTime), MAX(je.dateTime), CAST(SUM(je.distance) AS double) / SUM(je.time), AVG(CAST(je.time AS double)), SUM(je.distance)) " +
             "FROM JoggingEntity je " +
             "WHERE je.userId=:id " +
-            "GROUP BY WEEK(je.dateTime)")
+            "GROUP BY date_part('week', je.dateTime)")
     Page<WeekStatistics> getWeekStatisticsByUserId(Long id, Pageable pageable);
 }
