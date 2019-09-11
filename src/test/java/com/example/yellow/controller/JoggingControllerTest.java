@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class JoggingControllerTest extends AbstractTest {
@@ -43,11 +46,15 @@ public class JoggingControllerTest extends AbstractTest {
     @Test
     public void getUserJoggings() throws Exception {
 
+        JoggingEntity joggingEntity = JoggingEntity.builder().id(1L).userId(1L).build();
+        joggingRepository.save(joggingEntity);
+
         mockMvc.perform(get("/api/v1/joggings")
                 .header("Authorization", "user1")
                 .contentType("application/json")
                 .param("userId", "1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -60,7 +67,8 @@ public class JoggingControllerTest extends AbstractTest {
                 .header("Authorization", "user1")
                 .contentType("application/json")
                 .param("userId", "1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is("1")));
     }
 
     @Test
@@ -95,7 +103,7 @@ public class JoggingControllerTest extends AbstractTest {
     }
 
     @Test
-    public void getWeekStatistics() throws Exception{
+    public void getWeekStatistics() throws Exception {
 
         JoggingEntity joggingEntity = JoggingEntity.builder()
                 .id(1L).userId(1L).distance(10L).duration(10L)
@@ -107,6 +115,7 @@ public class JoggingControllerTest extends AbstractTest {
                 .header("Authorization", "user1")
                 .contentType("application/json")
                 .param("userId", "1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 }
