@@ -22,9 +22,8 @@ public class JoggingEntity {
 
     private Long distance;
 
-    @Column(name = "\"time\"")
-    private Long time;
+    private Long duration;
 
-    private LocalDateTime dateTime;
+    private LocalDateTime createdAt;
 
 }

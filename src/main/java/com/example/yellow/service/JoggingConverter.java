@@ -8,8 +8,8 @@ public class JoggingConverter {
     public static JoggingEntity updateEntity(JoggingEntity updatable, JoggingModel newData){
 
         updatable.setDistance(newData.getDistance());
-        updatable.setTime(newData.getTime());
-        updatable.setDateTime(newData.getDateTime());
+        updatable.setDuration(newData.getDuration());
+        updatable.setCreatedAt(newData.getCreatedAt());
 
         return updatable;
     }
@@ -18,8 +18,8 @@ public class JoggingConverter {
         return JoggingEntity.builder()
                 .id(model.getId())
                 .distance(model.getDistance())
-                .time(model.getTime())
-                .dateTime(model.getDateTime())
+                .duration(model.getDuration())
+                .createdAt(model.getCreatedAt())
                 .userId(userId)
                 .build();
     }
@@ -28,8 +28,8 @@ public class JoggingConverter {
         return JoggingModel.builder()
                 .id(entity.getId())
                 .distance(entity.getDistance())
-                .time(entity.getTime())
-                .dateTime(entity.getDateTime())
+                .duration(entity.getDuration())
+                .createdAt(entity.getCreatedAt())
                 .build();
     }
 }

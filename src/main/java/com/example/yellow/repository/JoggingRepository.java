@@ -14,9 +14,9 @@ public interface JoggingRepository extends PagingAndSortingRepository<JoggingEnt
     Page<JoggingEntity> findAllByUserId(Long userId, Pageable pageable);
 
     @Query("SELECT new com.example.yellow.model.WeekStatistics( " +
-            "MIN(je.dateTime), MAX(je.dateTime), CAST(SUM(je.distance) AS double) / SUM(je.time), AVG(CAST(je.time AS double)), SUM(je.distance)) " +
+            "MIN(je.createdAt), MAX(je.createdAt), CAST(SUM(je.distance) AS double) / SUM(je.duration), AVG(CAST(je.duration AS double)), SUM(je.distance)) " +
             "FROM JoggingEntity je " +
             "WHERE je.userId=:id " +
-            "GROUP BY date_part('week', je.dateTime)")
+            "GROUP BY date_part('week', je.createdAt)")
     Page<WeekStatistics> getWeekStatisticsByUserId(Long id, Pageable pageable);
 }
