@@ -1,0 +1,4 @@
+docker run --name test_postgres -e POSTGRES_PASSWORD=pass -p 5432:5432 -d -v $HOME/docker/volumes/postgres:/var/lib/postgresql postgres:latest
+docker start test_postgres
+docker cp src/main/resources/db/migration test_postgres:/
+docker exec -ti test_postgres psql
