@@ -6,25 +6,28 @@ import com.example.yellow.model.UserModel;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AuthControllerTest extends AbstractTest {
 
     @Test
-    public void signUp() throws Exception{
+    public void signUp() throws Exception {
         UserModel userModel = UserModel.builder().username("user1").password("user1").build();
 
         mockMvc.perform(post("/auth/signup")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(userModel)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token", is("user1")));
 
         Assert.assertEquals(1L, userRepository.count());
     }
 
     @Test
-    public void singIn() throws Exception{
+    public void singIn() throws Exception {
         UserEntity userEntity = UserEntity.builder().username("user1").password("pass1").build();
         userRepository.save(userEntity);
 
@@ -33,6 +36,8 @@ public class AuthControllerTest extends AbstractTest {
         mockMvc.perform(post("/auth/signin")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(userModel)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token", is("user1")));
+
     }
 }
