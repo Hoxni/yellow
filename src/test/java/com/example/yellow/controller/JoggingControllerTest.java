@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class JoggingControllerTest extends AbstractTest {
 
     @Before
-    public void addUser(){
+    public void setUsers(){
         UserEntity userEntity = UserEntity.builder()
                 .id(1L).username("user1").password("pass1").build();
         userRepository.save(userEntity);
