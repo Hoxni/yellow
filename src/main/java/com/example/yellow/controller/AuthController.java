@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserModel user) throws Exception{
+    public ResponseEntity<Map<String, String>> singIn(@RequestBody UserModel user) throws Exception{
 
         String token = authService.login(user.getUsername(), user.getPassword());
         Map<String, String> response = new HashMap<>();

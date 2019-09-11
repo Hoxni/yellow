@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS joggings
     id BIGSERIAL NOT NULL,
     user_id BIGSERIAL NOT NULL,
     distance BIGINT,
-    "time" BIGINT,
-    date_time TIMESTAMP,
+    duration BIGINT,
+    created_at TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );

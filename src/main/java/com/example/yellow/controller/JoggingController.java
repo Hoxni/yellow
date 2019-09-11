@@ -45,7 +45,7 @@ public class JoggingController {
         joggingService.deleteJogging(joggingId);
     }
 
-    @GetMapping("/statistics")
+    @GetMapping("/joggings/report")
     public List<WeekStatistics> getWeekStatistics(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
