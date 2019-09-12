@@ -2,6 +2,7 @@ package com.example.yellow.controller;
 
 import com.example.yellow.abstraction.AbstractTest;
 import com.example.yellow.entity.UserEntity;
+import com.example.yellow.enumeration.Role;
 import com.example.yellow.model.UserModel;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,9 +27,9 @@ public class AuthControllerTest extends AbstractTest {
         Assert.assertEquals(1L, userRepository.count());
     }
 
-    /*@Test
+    @Test
     public void singIn() throws Exception {
-        UserEntity userEntity = UserEntity.builder().username("user1").password("pass1").build();
+        UserEntity userEntity = UserEntity.builder().username("user1").password("pass1").userRole(Role.USER).build();
         userRepository.save(userEntity);
 
         UserModel userModel = UserModel.builder().username("user1").password("pass1").build();
@@ -39,5 +40,5 @@ public class AuthControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token", notNullValue()));
 
-    }*/
+    }
 }

@@ -40,7 +40,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                 if (jwtTokenUtils.validateToken(token)) {
 
-                    //String username = jwtTokenUtils.getUsernameFromToken(token);
                     List<Role> authority = List.of(Role.valueOf(claims.get("role").toString()));
 
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -20,22 +19,16 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signUp(@RequestBody UserModel user) throws Exception{
+    public ResponseEntity<Map<String, String>> signUp(@RequestBody UserModel user) {
 
-        String token = authService.addNewUser(user.getUsername(), user.getPassword());
-        Map<String, String> response = new HashMap<>();
-        response.put("username", user.getUsername());
-        response.put("token", token);
+        Map<String, String> response = authService.addNewUser(user.getUsername(), user.getPassword());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<Map<String, String>> singIn(@RequestBody UserModel user) throws Exception{
+    public ResponseEntity<Map<String, String>> singIn(@RequestBody UserModel user) {
 
-        String token = authService.login(user.getUsername(), user.getPassword());
-        Map<String, String> response = new HashMap<>();
-        response.put("username", user.getUsername());
-        response.put("token", token);
+        Map<String, String> response = authService.login(user.getUsername(), user.getPassword());
         return ResponseEntity.ok(response);
     }
 

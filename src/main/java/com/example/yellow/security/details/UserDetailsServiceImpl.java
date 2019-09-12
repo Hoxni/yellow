@@ -26,8 +26,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .role(user.getUserRole())
                 .build();
     }
-
-    public boolean usernameIsAlreadyExist(String username){
-        return userRepository.findByUsername(username).isPresent();
-    }
 }
