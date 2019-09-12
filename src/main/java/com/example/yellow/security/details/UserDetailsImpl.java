@@ -1,40 +1,41 @@
 package com.example.yellow.security.details;
 
-import com.example.yellow.entity.UserEntity;
+import com.example.yellow.enumeration.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserDetailsImpl implements UserDetails {
 
-    private UserEntity user;
-
-    public UserDetailsImpl(UserEntity user) {
-        this.user = user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
+    private Long id;
+    private String username;
+    private String password;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return username;
     }
 
     @Override

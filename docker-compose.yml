@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:latest
     container_name: test_postgres
-    network_mode: host
+    #network_mode: host
     volumes:
       - db-data:/var/lib/postgresql/data
     expose:
@@ -16,15 +16,17 @@ services:
       - POSTGRES_USER=postgres
     restart: always
   # APP*****************************************
-  app:
-    build: .
-    container_name: yellow_app
-    ports:
-      - 8080:8080
-    network_mode: host
-    depends_on:
-      - postgres
-    restart: always
+#  app:
+#    build: .
+#    container_name: yellow_app
+#    expose:
+#      - 8080
+#    ports:
+#      - 8080:8080
+#    network_mode: host
+#    depends_on:
+#      - postgres
+#    restart: always
 
 volumes:
   db-data:

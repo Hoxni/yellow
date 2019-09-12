@@ -1,6 +1,7 @@
 package com.example.yellow.service;
 
 import com.example.yellow.entity.UserEntity;
+import com.example.yellow.enumeration.Role;
 import com.example.yellow.repository.UserRepository;
 import com.example.yellow.security.jwt.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,18 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
 
-    public String addNewUser(String username, String password) throws Exception {
+    public String addNewUser(String username, String password) {
         if (!userRepository.findByUsername(username).isPresent()) {
-            userRepository.save(new UserEntity(username, password));
+            UserEntity userEntity = UserEntity.builder()
+                    .username("user1").password("pass1").userRole(Role.USER).build();
+
+            userRepository.save(userEntity);
+
             return login(username, password);
         } else throw new BadCredentialsException("Existing username");
     }
 
-    public String login(String username, String password) throws Exception {
+    public String login(String username, String password) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No such user"));
         if (user.getPassword().equals(password)) {
             auth(username, password);
