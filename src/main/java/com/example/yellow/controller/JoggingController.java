@@ -34,7 +34,7 @@ public class JoggingController {
     }
 
     @GetMapping("/joggings/{joggingId}")
-    @PreAuthorize("hasPermission(#joggingId, 'get_jogging')")
+    @PreAuthorize("hasPermission(#joggingId, 'get')")
     public JoggingModel getJogging(@PathVariable Long joggingId){
         return joggingService.getJogging(joggingId);
     }

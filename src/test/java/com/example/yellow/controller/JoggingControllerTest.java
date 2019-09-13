@@ -65,7 +65,7 @@ public class JoggingControllerTest extends AbstractTest {
     @Test
     public void getJogging() throws Exception {
         UserEntity userEntity = UserEntity.builder()
-                .username("user1").password("pass1").userRole(Role.USER).build();
+                .username("user1").password("pass1").userRole(Role.ADMIN).build();
         Long id = userRepository.save(userEntity).getId();
 
         JwtTokenUtils tokenUtils = new JwtTokenUtils();
