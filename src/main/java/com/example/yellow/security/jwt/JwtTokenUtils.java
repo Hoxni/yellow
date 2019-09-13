@@ -6,6 +6,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +28,7 @@ public class JwtTokenUtils {
     public String generateToken(UserEntity user){
         return Jwts.builder()
                 .setClaims(getClaims(user))
+                .setExpiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS)))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
@@ -37,6 +41,6 @@ public class JwtTokenUtils {
     }
 
     public boolean validateToken(String token){
-        return true;
+        return getClaimsFromToken(token).getExpiration().after(new Date());
     }
 }
