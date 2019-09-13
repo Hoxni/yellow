@@ -25,20 +25,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     protected UserDetailsService userDetailsService;
 
-    @Autowired
-    protected JwtTokenUtils jwtTokenUtils;
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
         String token = httpServletRequest.getHeader("Authorization");
 
         if (token != null) {
-            Claims claims = jwtTokenUtils.getClaimsFromToken(token);
+            Claims claims = JwtTokenUtils.getClaimsFromToken(token);
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                if (jwtTokenUtils.validateToken(token)) {
+                if (JwtTokenUtils.validateToken(token)) {
 
                     List<Role> authority = List.of(Role.valueOf(claims.get("role").toString()));
 
@@ -48,6 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                     usernamePasswordAuthenticationToken
                             .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }

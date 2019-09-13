@@ -26,8 +26,7 @@ public class JoggingControllerTest extends AbstractTest {
                 .username("user1").password("pass1").userRole(Role.USER).build();
         Long id = userRepository.save(userEntity).getId();
 
-        JwtTokenUtils tokenUtils = new JwtTokenUtils();
-        String token = tokenUtils.generateToken(userEntity);
+        String token = JwtTokenUtils.generateToken(userEntity);
 
         JoggingModel joggingModel = JoggingModel.builder()
                 .distance(10L).duration(10L)
@@ -48,8 +47,7 @@ public class JoggingControllerTest extends AbstractTest {
                 .username("user1").password("pass1").userRole(Role.USER).build();
         Long id = userRepository.save(userEntity).getId();
 
-        JwtTokenUtils tokenUtils = new JwtTokenUtils();
-        String token = tokenUtils.generateToken(userEntity);
+        String token = JwtTokenUtils.generateToken(userEntity);
 
         JoggingEntity joggingEntity = JoggingEntity.builder().userId(id).build();
         joggingRepository.save(joggingEntity);
@@ -69,8 +67,7 @@ public class JoggingControllerTest extends AbstractTest {
                 .username("user1").password("pass1").userRole(Role.ADMIN).build();
         Long id = userRepository.save(userEntity).getId();
 
-        JwtTokenUtils tokenUtils = new JwtTokenUtils();
-        String token = tokenUtils.generateToken(userEntity);
+        String token = JwtTokenUtils.generateToken(userEntity);
 
         JoggingEntity joggingEntity = JoggingEntity.builder().userId(id).build();
         Long jogId = joggingRepository.save(joggingEntity).getId();
@@ -89,8 +86,7 @@ public class JoggingControllerTest extends AbstractTest {
                 .username("user1").password("pass1").userRole(Role.USER).build();
         Long id = userRepository.save(userEntity).getId();
 
-        JwtTokenUtils tokenUtils = new JwtTokenUtils();
-        String token = tokenUtils.generateToken(userEntity);
+        String token = JwtTokenUtils.generateToken(userEntity);
 
         JoggingEntity joggingEntity = JoggingEntity.builder().userId(id).build();
         Long jogId = joggingRepository.save(joggingEntity).getId();
@@ -111,8 +107,7 @@ public class JoggingControllerTest extends AbstractTest {
                 .username("user1").password("pass1").userRole(Role.USER).build();
         Long id = userRepository.save(userEntity).getId();
 
-        JwtTokenUtils tokenUtils = new JwtTokenUtils();
-        String token = tokenUtils.generateToken(userEntity);
+        String token = JwtTokenUtils.generateToken(userEntity);
 
         JoggingEntity joggingEntity = JoggingEntity.builder().userId(id).build();
         Long jogId = joggingRepository.save(joggingEntity).getId();
@@ -132,8 +127,7 @@ public class JoggingControllerTest extends AbstractTest {
                 .username("user1").password("pass1").userRole(Role.USER).build();
         Long id = userRepository.save(userEntity).getId();
 
-        JwtTokenUtils tokenUtils = new JwtTokenUtils();
-        String token = tokenUtils.generateToken(userEntity);
+        String token = JwtTokenUtils.generateToken(userEntity);
 
         JoggingEntity joggingEntity = JoggingEntity.builder()
                 .userId(id).distance(10L).duration(10L)

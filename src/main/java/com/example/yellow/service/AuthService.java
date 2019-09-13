@@ -15,9 +15,6 @@ import java.util.Map;
 public class AuthService {
 
     @Autowired
-    private JwtTokenUtils jwtTokenUtils;
-
-    @Autowired
     private UserRepository userRepository;
 
     public Map<String, String> addNewUser(String username, String password) {
@@ -34,7 +31,7 @@ public class AuthService {
     public Map<String, String> login(String username, String password) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No such user"));
         if (user.getPassword().equals(password)) {
-            String token = jwtTokenUtils.generateToken(user);
+            String token = JwtTokenUtils.generateToken(user);
             return Map.of("id", user.getId().toString(), "token", token);
         } else throw new BadCredentialsException("Wrong username/pass");
     }
