@@ -3,7 +3,6 @@ package com.example.yellow.entity;
 import com.example.yellow.enumeration.PostgreSqlEnumType;
 import com.example.yellow.enumeration.Role;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -39,5 +38,12 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", orphanRemoval = true)
     private List<JoggingEntity> joggings;
+
+    @PrePersist
+    public void prePersist(){
+        if (userRole == null){
+            userRole = Role.USER;
+        }
+    }
 
 }

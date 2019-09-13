@@ -19,13 +19,13 @@ public class JoggingController {
     private JoggingService joggingService;
 
     @PostMapping("/joggings")
-    @PreAuthorize("hasPermission(#userId, 'create')")
+    @PreAuthorize("@joggingService.isOwner(authentication, #userId)")
     public void createJogging(@RequestParam Long userId, @RequestBody JoggingModel jogging) {
         joggingService.createJogging(userId, jogging);
     }
 
     @GetMapping("/joggings")
-    @PreAuthorize("hasPermission(#userId, 'read')")
+    @PreAuthorize("@joggingService.isOwner(authentication, #userId) || @joggingService.isAdmin(authentication)")
     public List<JoggingModel> getUserJoggings(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
@@ -34,25 +34,25 @@ public class JoggingController {
     }
 
     @GetMapping("/joggings/{joggingId}")
-    @PreAuthorize("hasPermission(#joggingId, 'get')")
+    @PreAuthorize("@joggingService.isAdmin(authentication)")
     public JoggingModel getJogging(@PathVariable Long joggingId){
         return joggingService.getJogging(joggingId);
     }
 
     @PutMapping("/joggings")
-    @PreAuthorize("hasPermission(#jogging.id, 'read')")
+    @PreAuthorize("@joggingService.hasJogging(authentication, #jogging.id)")
     public void updateJogging(@RequestBody JoggingModel jogging) {
         joggingService.updateJogging(jogging);
     }
 
     @DeleteMapping("/joggings/{joggingId}")
-    @PreAuthorize("hasPermission(#joggingId, 'delete')")
+    @PreAuthorize("@joggingService.hasJogging(authentication, #joggingId)")
     public void deleteJogging(@PathVariable Long joggingId) {
         joggingService.deleteJogging(joggingId);
     }
 
     @GetMapping("/joggings/report")
-    @PreAuthorize("hasPermission(#userId, 'report')")
+    @PreAuthorize("@joggingService.isOwner(authentication, #userId) || @joggingService.isAdmin(authentication)")
     public List<WeekStatistics> getWeekStatistics(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
