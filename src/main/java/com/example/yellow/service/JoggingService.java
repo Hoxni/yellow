@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,18 +63,22 @@ public class JoggingService {
         return joggingRepository.getWeekStatisticsByUserId(userId, pageable);
     }
 
-    public boolean isOwner(Authentication authentication, Long userId){
+    public boolean isOwner(Long userId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Claims claims = (Claims) authentication.getPrincipal();
         return claims.get("id").toString().equals(userId.toString());
     }
 
-    public boolean isAdmin(Authentication authentication){
-        return authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.name()));
+    public boolean isAdmin(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities()
+                .contains(new SimpleGrantedAuthority(Role.ADMIN.name()));
     }
 
-    public boolean hasJogging(Authentication authentication, Long joggingId){
-        String userId = ((Claims)authentication.getPrincipal()).get("id").toString();
-        return joggingRepository.findById(joggingId).filter(jogging -> jogging.getUserId().toString().equals(userId)).isPresent();
+    public boolean hasJogging(Long joggingId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.valueOf(((Claims)authentication.getPrincipal()).get("id").toString());
+        return joggingRepository.findByIdAndUserId(joggingId, userId).isPresent();
     }
 
 }

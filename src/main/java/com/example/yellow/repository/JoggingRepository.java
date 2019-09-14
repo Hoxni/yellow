@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface JoggingRepository extends PagingAndSortingRepository<JoggingEntity, Long> {
 
@@ -19,4 +21,6 @@ public interface JoggingRepository extends PagingAndSortingRepository<JoggingEnt
             "WHERE je.userId=:id " +
             "GROUP BY date_part('week', je.createdAt)")
     Page<WeekStatistics> getWeekStatisticsByUserId(Long id, Pageable pageable);
+
+    Optional<JoggingEntity> findByIdAndUserId(Long id, Long userId);
 }
