@@ -4,6 +4,7 @@ import com.example.yellow.model.JoggingModel;
 import com.example.yellow.model.WeekStatistics;
 import com.example.yellow.service.JoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
@@ -18,11 +19,13 @@ public class JoggingController {
     private JoggingService joggingService;
 
     @PostMapping("/joggings")
+    @PreAuthorize("@joggingService.isOwner(#userId)")
     public void createJogging(@RequestParam Long userId, @RequestBody JoggingModel jogging) {
         joggingService.createJogging(userId, jogging);
     }
 
     @GetMapping("/joggings")
+    @PreAuthorize("@joggingService.isOwner(#userId) || @joggingService.isAdmin()")
     public List<JoggingModel> getUserJoggings(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
@@ -31,21 +34,25 @@ public class JoggingController {
     }
 
     @GetMapping("/joggings/{joggingId}")
+    @PreAuthorize("@joggingService.isAdmin()")
     public JoggingModel getJogging(@PathVariable Long joggingId){
         return joggingService.getJogging(joggingId);
     }
 
     @PutMapping("/joggings")
+    @PreAuthorize("@joggingService.hasJogging(#jogging.id)")
     public void updateJogging(@RequestBody JoggingModel jogging) {
         joggingService.updateJogging(jogging);
     }
 
     @DeleteMapping("/joggings/{joggingId}")
+    @PreAuthorize("@joggingService.hasJogging(#joggingId)")
     public void deleteJogging(@PathVariable Long joggingId) {
         joggingService.deleteJogging(joggingId);
     }
 
     @GetMapping("/joggings/report")
+    @PreAuthorize("@joggingService.isOwner(#userId) || @joggingService.isAdmin()")
     public List<WeekStatistics> getWeekStatistics(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
