@@ -15,17 +15,18 @@ services:
       - POSTGRES_USER=postgres
     restart: always
   # APP*****************************************
-  #app:
-  #  build: .
-  #  container_name: yellow_app
-  # expose:
-  #    - 8080
-  #  ports:
-  #    - 8080:8080
-  #  network_mode: host
-  #  depends_on:
-  #    - postgres
-  #  restart: always
+  app:
+    build: .
+    container_name: yellow_app
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+    restart: always
 
 volumes:
   db-data:
