@@ -23,7 +23,7 @@ public class JoggingControllerTest extends AbstractTest {
     public void addJogging() throws Exception {
 
         UserEntity userEntity = UserEntity.builder()
-                .username("user1").password("pass1").userRole(Role.USER).build();
+                .username("user1").password("pass1").build();
         Long id = userRepository.save(userEntity).getId();
 
         String token = JwtTokenUtils.generateToken(userEntity);
@@ -44,7 +44,7 @@ public class JoggingControllerTest extends AbstractTest {
     @Test
     public void getUserJoggings() throws Exception {
         UserEntity userEntity = UserEntity.builder()
-                .username("user1").password("pass1").userRole(Role.USER).build();
+                .username("user1").password("pass1").build();
         Long id = userRepository.save(userEntity).getId();
 
         String token = JwtTokenUtils.generateToken(userEntity);
@@ -83,7 +83,7 @@ public class JoggingControllerTest extends AbstractTest {
     @Test
     public void updateJogging() throws Exception {
         UserEntity userEntity = UserEntity.builder()
-                .username("user1").password("pass1").userRole(Role.USER).build();
+                .username("user1").password("pass1").build();
         Long id = userRepository.save(userEntity).getId();
 
         String token = JwtTokenUtils.generateToken(userEntity);
@@ -104,7 +104,7 @@ public class JoggingControllerTest extends AbstractTest {
     @Test
     public void deleteJogging() throws Exception{
         UserEntity userEntity = UserEntity.builder()
-                .username("user1").password("pass1").userRole(Role.USER).build();
+                .username("user1").password("pass1").build();
         Long id = userRepository.save(userEntity).getId();
 
         String token = JwtTokenUtils.generateToken(userEntity);
@@ -124,7 +124,7 @@ public class JoggingControllerTest extends AbstractTest {
     @Test
     public void getWeekStatistics() throws Exception {
         UserEntity userEntity = UserEntity.builder()
-                .username("user1").password("pass1").userRole(Role.USER).build();
+                .username("user1").password("pass1").build();
         Long id = userRepository.save(userEntity).getId();
 
         String token = JwtTokenUtils.generateToken(userEntity);

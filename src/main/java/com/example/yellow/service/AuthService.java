@@ -20,7 +20,7 @@ public class AuthService {
     public Map<String, String> addNewUser(String username, String password) {
         if (!userRepository.findByUsername(username).isPresent()) {
             UserEntity userEntity = UserEntity.builder()
-                    .username(username).password(password).userRole(Role.USER).build();
+                    .username(username).password(password).build();
 
             userRepository.save(userEntity);
 
