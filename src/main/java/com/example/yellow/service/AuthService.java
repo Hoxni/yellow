@@ -3,7 +3,6 @@ package com.example.yellow.service;
 import com.example.yellow.entity.UserEntity;
 import com.example.yellow.repository.UserRepository;
 import com.example.yellow.security.jwt.JwtTokenUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,11 @@ import java.util.Map;
 @Service
 public class AuthService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public Map<String, String> addNewUser(String username, String password) {
         if (!userRepository.findByUsername(username).isPresent()) {

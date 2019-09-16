@@ -93,7 +93,7 @@ public class JoggingControllerTest extends AbstractTest {
 
         JoggingModel joggingModel = JoggingModel.builder().id(jogId).build();
 
-        mockMvc.perform(put("/api/v1/joggings")
+        mockMvc.perform(put("/api/v1/joggings/{joggingId}", jogId)
                 .header("Authorization", token)
                 .contentType("application/json")
                 .param("userId", id.toString())
