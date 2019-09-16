@@ -15,10 +15,6 @@ public class JwtTokenUtils {
 
     private static String secret = "sdrFf367JKUsre02476f";
 
-    public static String getUsernameFromToken(String token){
-        return (String) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("username");
-    }
-
     public static Claims getClaimsFromToken(String token){
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }

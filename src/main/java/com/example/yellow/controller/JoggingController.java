@@ -2,8 +2,8 @@ package com.example.yellow.controller;
 
 import com.example.yellow.model.JoggingModel;
 import com.example.yellow.model.WeekStatistics;
+import com.example.yellow.security.service.SecurityService;
 import com.example.yellow.service.JoggingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,17 +15,23 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class JoggingController {
 
-    @Autowired
-    private JoggingService joggingService;
+    private final JoggingService joggingService;
+
+    private final SecurityService securityService;
+
+    public JoggingController(JoggingService joggingService, SecurityService securityService) {
+        this.joggingService = joggingService;
+        this.securityService = securityService;
+    }
 
     @PostMapping("/joggings")
-    @PreAuthorize("@joggingService.isOwner(#userId)")
+    @PreAuthorize("@securityService.isOwner(#userId)")
     public void createJogging(@RequestParam Long userId, @RequestBody JoggingModel jogging) {
         joggingService.createJogging(userId, jogging);
     }
 
     @GetMapping("/joggings")
-    @PreAuthorize("@joggingService.isOwner(#userId) || @joggingService.isAdmin()")
+    @PreAuthorize("@securityService.isOwner(#userId) || @securityService.isAdmin()")
     public List<JoggingModel> getUserJoggings(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
@@ -34,25 +40,25 @@ public class JoggingController {
     }
 
     @GetMapping("/joggings/{joggingId}")
-    @PreAuthorize("@joggingService.isAdmin()")
+    @PreAuthorize("@securityService.isAdmin()")
     public JoggingModel getJogging(@PathVariable Long joggingId){
         return joggingService.getJogging(joggingId);
     }
 
-    @PutMapping("/joggings")
-    @PreAuthorize("@joggingService.hasJogging(#jogging.id)")
-    public void updateJogging(@RequestBody JoggingModel jogging) {
-        joggingService.updateJogging(jogging);
+    @PutMapping("/joggings/{joggingId}")
+    @PreAuthorize("@joggingService.isOwnerOfJogging(authentication.principal['id'], #joggingId)")
+    public void updateJogging(@PathVariable Long joggingId, @RequestBody JoggingModel jogging) {
+        joggingService.updateJogging(joggingId, jogging);
     }
 
     @DeleteMapping("/joggings/{joggingId}")
-    @PreAuthorize("@joggingService.hasJogging(#joggingId)")
+    @PreAuthorize("@joggingService.isOwnerOfJogging(authentication.principal['id'], #joggingId)")
     public void deleteJogging(@PathVariable Long joggingId) {
         joggingService.deleteJogging(joggingId);
     }
 
     @GetMapping("/joggings/report")
-    @PreAuthorize("@joggingService.isOwner(#userId) || @joggingService.isAdmin()")
+    @PreAuthorize("@securityService.isOwner(#userId) || @securityService.isAdmin()")
     public List<WeekStatistics> getWeekStatistics(
             @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") @Min(1) int page,
