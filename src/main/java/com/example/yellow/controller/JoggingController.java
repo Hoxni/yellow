@@ -2,7 +2,6 @@ package com.example.yellow.controller;
 
 import com.example.yellow.model.JoggingModel;
 import com.example.yellow.model.WeekStatistics;
-import com.example.yellow.security.service.SecurityService;
 import com.example.yellow.service.JoggingService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +16,8 @@ public class JoggingController {
 
     private final JoggingService joggingService;
 
-    private final SecurityService securityService;
-
-    public JoggingController(JoggingService joggingService, SecurityService securityService) {
+    public JoggingController(JoggingService joggingService) {
         this.joggingService = joggingService;
-        this.securityService = securityService;
     }
 
     @PostMapping("/joggings")
