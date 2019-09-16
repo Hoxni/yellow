@@ -7,7 +7,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 public class PostgresInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    public PostgreSQLContainer postgreSQLContainer =
+    private final PostgreSQLContainer postgreSQLContainer =
             new PostgreSQLContainer("postgres:latest")
                     .withDatabaseName("postgres")
                     .withUsername("postgres")
